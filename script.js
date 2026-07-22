@@ -1578,6 +1578,7 @@ function resetSeksyen18A(){
 // JENIS TEMPOH BULAN
 // =====================================================
 
+
 function calculateGGNMonth(){
 
 
@@ -1599,20 +1600,10 @@ function calculateGGNMonth(){
 
 
 
-    let basic =
-    getInputNumber(
-        "ggnBasicSalary"
-    );
-
-
-    let allowance =
-    getInputNumber(
-        "ggnAllowance"
-    );
-
-
     let totalSalary =
-    basic + allowance;
+    getInputNumber(
+        "ggnTotalSalary"
+    );
 
 
 
@@ -1637,6 +1628,8 @@ function calculateGGNMonth(){
 
 
 
+
+
 // =====================================================
 // KALKULATOR GAJI GANTI NOTIS (GGN)
 // JENIS TEMPOH MINGGU
@@ -1644,16 +1637,6 @@ function calculateGGNMonth(){
 
 
 function calculateGGNWeek(){
-
-
-
-    let totalSalary =
-    updateSalaryTotal(
-        "ggnBasicSalary",
-        "ggnAllowance",
-        "ggnTotalSalary"
-    );
-
 
 
 
@@ -1666,7 +1649,6 @@ function calculateGGNWeek(){
 
 
 
-
     let startDate =
     getElement(
         "ggnWeekStartDate"
@@ -1674,34 +1656,34 @@ function calculateGGNWeek(){
 
 
 
-
     if(!week){
-
 
         alert(
             "Sila masukkan bilangan minggu notis."
         );
 
-
         return;
 
     }
-
 
 
 
     if(!startDate){
 
-
         alert(
             "Sila masukkan Tarikh Mula Notis."
         );
-
 
         return;
 
     }
 
+
+
+    let totalSalary =
+    getInputNumber(
+        "ggnTotalSalary"
+    );
 
 
 
@@ -1710,10 +1692,8 @@ function calculateGGNWeek(){
 
 
 
-
     let totalDays =
     week * 7;
-
 
 
 
@@ -1732,8 +1712,6 @@ function calculateGGNWeek(){
 
 
 
-
-
     let amount =
     calculateGGNByMonth(
         totalSalary,
@@ -1743,15 +1721,10 @@ function calculateGGNWeek(){
 
 
 
-
-
-
     setText(
         "ggnWeekDays",
         totalDays + " Hari"
     );
-
-
 
 
 
@@ -1764,13 +1737,10 @@ function calculateGGNWeek(){
 
 
 
-
-
     setText(
         "ggnWeekAmount",
         formatRM(amount)
     );
-
 
 
 }
@@ -1779,6 +1749,10 @@ function calculateGGNWeek(){
 
 
 
+
+// =====================================================
+// RESET GGN BULAN
+// =====================================================
 
 
 function resetGGNMonth(){
@@ -1817,7 +1791,6 @@ function resetGGNMonth(){
 function resetGGNWeek(){
 
 
-
     [
 
         "ggnWeekNotice",
@@ -1831,13 +1804,10 @@ function resetGGNWeek(){
 
 
 
-
-
     setText(
         "ggnWeekDays",
         "0 Hari"
     );
-
 
 
     setText(
@@ -1846,12 +1816,10 @@ function resetGGNWeek(){
     );
 
 
-
     setText(
         "ggnWeekAmount",
         "RM 0.00"
     );
-
 
 
 }
@@ -1860,9 +1828,9 @@ function resetGGNWeek(){
 
 
 
+
 // =====================================================
 // KIRA GGN IKUT BILANGAN HARI
-// (DIGUNAKAN OLEH MINGGU)
 // =====================================================
 
 
@@ -1873,9 +1841,7 @@ function calculateGGNByMonth(
 ){
 
 
-
     let total = 0;
-
 
 
     let current =
@@ -1883,12 +1849,9 @@ function calculateGGNByMonth(
 
 
 
-
-
     while(
         current <= end
     ){
-
 
 
         let year =
@@ -1898,7 +1861,6 @@ function calculateGGNByMonth(
 
         let month =
         current.getMonth();
-
 
 
 
@@ -1912,10 +1874,8 @@ function calculateGGNByMonth(
 
 
 
-
         let firstDay =
         current.getDate();
-
 
 
 
@@ -1930,13 +1890,10 @@ function calculateGGNByMonth(
             month === end.getMonth()
         ){
 
-
             lastDay =
             end.getDate();
 
-
         }
-
 
 
 
@@ -1948,20 +1905,15 @@ function calculateGGNByMonth(
 
 
 
-
-
         let dailyRate =
         salary /
         monthDays;
 
 
 
-
-
         total +=
         dailyRate *
         days;
-
 
 
 
@@ -1977,19 +1929,10 @@ function calculateGGNByMonth(
 
 
 
-
-
     return total;
 
 
 }
-
-
-
-
-
-
-
 
 // =====================================================
 // FORMAT TARIKH INPUT
