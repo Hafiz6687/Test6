@@ -1600,11 +1600,12 @@ function calculateGGNMonth(){
 
 
 
-    let totalSalary =
-    getInputNumber(
-        "ggnTotalSalary"
-    );
-
+ let totalSalary =
+Number(
+    getElement("ggnTotalSalary")
+    .value
+    .replace(/[^0-9.]/g,"")
+);
 
 
     let amount =
