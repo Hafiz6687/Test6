@@ -139,10 +139,8 @@ function calculateInput(value){
 function getInputNumber(id){
 
 
-
     let element =
     getElement(id);
-
 
 
     if(!element){
@@ -152,14 +150,15 @@ function getInputNumber(id){
     }
 
 
+    let value =
+    element.value
+    .replace(/[^0-9.]/g,"");
 
-    return calculateInput(
-        element.value
-    );
+
+    return Number(value) || 0;
 
 
 }
-
 
 
 
