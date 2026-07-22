@@ -469,7 +469,19 @@ function calculateORP(){
 
 }
 
+function getGGNORP(){
 
+    let totalSalary =
+    updateSalaryTotal(
+        "ggnBasicSalary",
+        "ggnAllowance",
+        "ggnTotalSalary"
+    );
+
+
+    return totalSalary / 26;
+
+}
 
 
 
@@ -1600,15 +1612,13 @@ function calculateGGNMonth(){
 
 
 
-    let totalSalary =
-    getInputNumber(
-        "ggnTotalSalary"
-    );
+    let ORP =
+    getGGNORP();
 
 
 
     let amount =
-    totalSalary * month;
+    ORP * 26 * month;
 
 
 
@@ -1625,9 +1635,6 @@ function calculateGGNMonth(){
 
 
 }
-
-
-
 
 
 // =====================================================
