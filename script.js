@@ -139,8 +139,10 @@ function calculateInput(value){
 function getInputNumber(id){
 
 
+
     let element =
     getElement(id);
+
 
 
     if(!element){
@@ -150,15 +152,14 @@ function getInputNumber(id){
     }
 
 
-    let value =
-    element.value
-    .replace(/[^0-9.]/g,"");
 
-
-    return Number(value) || 0;
+    return calculateInput(
+        element.value
+    );
 
 
 }
+
 
 
 
@@ -469,19 +470,7 @@ function calculateORP(){
 
 }
 
-function getGGNORP(){
 
-    let totalSalary =
-    updateSalaryTotal(
-        "ggnBasicSalary",
-        "ggnAllowance",
-        "ggnTotalSalary"
-    );
-
-
-    return totalSalary / 26;
-
-}
 
 
 
@@ -1075,6 +1064,184 @@ function resetHariRehatLebih(){
 
 
 }
+// =====================================================
+// SCRIPT.JS
+// FINAL INTEGRATION VERSION
+// PART 3/4
+// =====================================================
+
+
+// =====================================================
+// KALKULATOR GAJI GANTI NOTIS (BULAN)
+//
+// Input:
+// Bilangan Bulan
+//
+// Sumber Upah:
+// ORP Calculator
+//
+// Formula:
+// Jumlah Upah x Bilangan Bulan
+// =====================================================
+
+
+function calculateGGNMonth(){
+
+    let totalSalary =
+    getInputNumber(
+        "orpBasicSalary"
+    )
+    +
+    getInputNumber(
+        "orpAllowance"
+    );
+
+
+    let months =
+    Number(
+        getElement(
+            "ggnMonthNotice"
+        ).value
+    );
+
+
+    if(!months){
+
+        alert(
+            "Sila masukkan bilangan bulan notis."
+        );
+
+        return;
+
+    }
+
+
+    let amount =
+    totalSalary *
+    months;
+
+
+    setText(
+        "ggnResultType",
+        "Bulan"
+    );
+
+
+    setText(
+        "ggnResultMonth",
+        months + " Bulan"
+    );
+
+
+    setText(
+        "ggnAmount",
+        formatRM(amount)
+    );
+
+}
+
+
+
+// =====================================================
+// RESET KALKULATOR GAJI GANTI NOTIS
+// RESET SEMUA FIELD GGN
+// =====================================================
+
+
+function resetGGN(){
+
+
+    // =========================
+    // RESET INPUT
+    // =========================
+
+
+    [
+
+        "ggnBasicSalary",
+        "ggnAllowance",
+        "ggnTotalSalary",
+        "ggnNoticeType",
+        "ggnMonthNotice",
+        "ggnNoticePeriod",
+        "ggnStartDate",
+        "ggnEndDate"
+
+    ]
+    .forEach(
+        function(id){
+
+            let element =
+            document.getElementById(id);
+
+
+            if(element){
+
+                element.value = "";
+
+            }
+
+        }
+    );
+
+
+
+    // =========================
+    // RESET KEPUTUSAN
+    // =========================
+
+
+    [
+
+        "ggnResultType",
+        "ggnResultMonth",
+        "ggnNoticeDays",
+        "ggnAmount"
+
+    ]
+    .forEach(
+        function(id){
+
+            let element =
+            document.getElementById(id);
+
+
+            if(element){
+
+                if(id === "ggnResultType"){
+
+                    element.innerHTML = "-";
+
+                }
+
+
+                else if(id === "ggnResultMonth"){
+
+                    element.innerHTML = "0 Bulan";
+
+                }
+
+
+                else if(id === "ggnNoticeDays"){
+
+                    element.innerHTML = "0 Hari";
+
+                }
+
+
+                else if(id === "ggnAmount"){
+
+                    element.innerHTML = "RM 0.00";
+
+                }
+
+            }
+
+        }
+    );
+
+
+}
 
 
 // =====================================================
@@ -1585,88 +1752,71 @@ function resetSeksyen18A(){
 
 }
 
-// =====================================================
-// KALKULATOR GAJI GANTI NOTIS (GGN)
-// JENIS TEMPOH BULAN
-// =====================================================
-
-
-function calculateGGNMonth(){
-
-
-    let month =
-    Number(
-        getElement("ggnMonthNotice").value
-    );
-
-
-    if(!month){
-
-        alert(
-            "Sila masukkan bilangan bulan notis."
-        );
-
-        return;
-
-    }
-
-
-
-    let ORP =
-    getGGNORP();
-
-
-
-    let amount =
-    ORP * 26 * month;
-
-
-
-    setText(
-        "ggnResultMonth",
-        month + " Bulan"
-    );
-
-
-    setText(
-        "ggnAmount",
-        formatRM(amount)
-    );
-
-
-}
-
 
 // =====================================================
 // KALKULATOR GAJI GANTI NOTIS (GGN)
-// JENIS TEMPOH MINGGU
+// =====================================================
+// HTML ID REQUIRED:
+//
+// ggnStartDate
+// ggnEndDate
+// ggnNoticeType
+// ggnNoticePeriod
+// ggnNoticeDays
+// ggnAmount
+//
 // =====================================================
 
 
-function calculateGGNWeek(){
+function calculateGGN(){
 
 
 
-    let week =
+    let totalSalary =
+    updateSalaryTotal(
+        "ggnBasicSalary",
+        "ggnAllowance",
+        "ggnTotalSalary"
+    );
+
+
+
+
+
+    let type =
+    getElement(
+        "ggnNoticeType"
+    ).value;
+
+
+
+
+    let period =
     Number(
         getElement(
-            "ggnWeekNotice"
+            "ggnNoticePeriod"
         ).value
     );
 
 
 
+
     let startDate =
     getElement(
-        "ggnWeekStartDate"
+        "ggnStartDate"
     ).value;
 
 
 
-    if(!week){
+
+
+    if(
+        !type ||
+        !period
+    ){
 
         alert(
-            "Sila masukkan bilangan minggu notis."
+            "Sila pilih jenis notis dan masukkan tempoh notis."
         );
 
         return;
@@ -1675,7 +1825,11 @@ function calculateGGNWeek(){
 
 
 
-    if(!startDate){
+
+
+    if(
+        !startDate
+    ){
 
         alert(
             "Sila masukkan Tarikh Mula Notis."
@@ -1687,20 +1841,12 @@ function calculateGGNWeek(){
 
 
 
-    let totalSalary =
-    getInputNumber(
-        "ggnTotalSalary"
-    );
-
 
 
     let start =
     new Date(startDate);
 
 
-
-    let totalDays =
-    week * 7;
 
 
 
@@ -1709,79 +1855,179 @@ function calculateGGNWeek(){
 
 
 
-    end.setDate(
-        end.getDate()
+
+
+    let totalDays = 0;
+
+    let amount = 0;
+
+
+
+
+
+    // =====================================================
+    // NOTIS BULAN
+    // Formula:
+    // Jumlah Upah x Bilangan Bulan
+    // =====================================================
+
+
+    if(
+        type === "month"
+    ){
+
+
+
+        end.setMonth(
+            end.getMonth() + period
+        );
+
+
+
+        end.setDate(
+            end.getDate() - 1
+        );
+
+
+
+        totalDays =
+        Math.ceil(
+            (
+                end - start
+            )
+            /
+            (1000*60*60*24)
+        )
         +
-        totalDays
-        -
-        1
+        1;
+
+
+
+
+        amount =
+        totalSalary *
+        period;
+
+
+
+    }
+
+
+
+
+
+    // =====================================================
+    // NOTIS MINGGU
+    // =====================================================
+
+
+    else if(
+        type === "week"
+    ){
+
+
+
+        totalDays =
+        period * 7;
+
+
+
+
+        end.setDate(
+            end.getDate()
+            +
+            totalDays
+            -
+            1
+        );
+
+
+
+        amount =
+        calculateGGNByMonth(
+            totalSalary,
+            start,
+            end
+        );
+
+
+    }
+
+
+
+
+
+    // =====================================================
+    // NOTIS HARI
+    // =====================================================
+
+
+    else if(
+        type === "day"
+    ){
+
+
+
+        totalDays =
+        period;
+
+
+
+
+        end.setDate(
+            end.getDate()
+            +
+            totalDays
+            -
+            1
+        );
+
+
+
+        amount =
+        calculateGGNByMonth(
+            totalSalary,
+            start,
+            end
+        );
+
+
+    }
+
+
+
+
+
+
+
+    // =====================================================
+    // OUTPUT
+    // =====================================================
+
+
+
+    setValue(
+        "ggnEndDate",
+        formatDateInput(end)
     );
 
-
-
-    let amount =
-    calculateGGNByMonth(
-        totalSalary,
-        start,
-        end
-    );
 
 
 
     setText(
-        "ggnWeekDays",
+        "ggnNoticeDays",
         totalDays + " Hari"
     );
 
 
 
-    setText(
-        "ggnWeekResultEndDate",
-        end.toLocaleDateString(
-            "ms-MY"
-        )
-    );
-
-
 
     setText(
-        "ggnWeekAmount",
+        "ggnAmount",
         formatRM(amount)
     );
 
 
-}
-
-
-
-
-
-
-// =====================================================
-// RESET GGN BULAN
-// =====================================================
-
-
-function resetGGNMonth(){
-
-
-    setValue(
-        "ggnMonthNotice",
-        ""
-    );
-
-
-    setText(
-        "ggnResultMonth",
-        "0 Bulan"
-    );
-
-
-    setText(
-        "ggnAmount",
-        "RM 0.00"
-    );
-
 
 }
 
@@ -1790,54 +2036,11 @@ function resetGGNMonth(){
 
 
 
-// =====================================================
-// RESET GGN MINGGU
-// =====================================================
-
-
-function resetGGNWeek(){
-
-
-    [
-
-        "ggnWeekNotice",
-        "ggnWeekStartDate",
-        "ggnWeekEndDate"
-
-    ]
-    .forEach(
-        id=>setValue(id,"")
-    );
-
-
-
-    setText(
-        "ggnWeekDays",
-        "0 Hari"
-    );
-
-
-    setText(
-        "ggnWeekResultEndDate",
-        "-"
-    );
-
-
-    setText(
-        "ggnWeekAmount",
-        "RM 0.00"
-    );
-
-
-}
-
-
-
 
 
 
 // =====================================================
-// KIRA GGN IKUT BILANGAN HARI
+// KIRA GGN IKUT BULAN
 // =====================================================
 
 
@@ -1848,7 +2051,9 @@ function calculateGGNByMonth(
 ){
 
 
+
     let total = 0;
+
 
 
     let current =
@@ -1856,9 +2061,12 @@ function calculateGGNByMonth(
 
 
 
+
+
     while(
         current <= end
     ){
+
 
 
         let year =
@@ -1868,6 +2076,7 @@ function calculateGGNByMonth(
 
         let month =
         current.getMonth();
+
 
 
 
@@ -1881,13 +2090,19 @@ function calculateGGNByMonth(
 
 
 
+
+
         let firstDay =
         current.getDate();
 
 
 
+
+
         let lastDay =
         monthDays;
+
+
 
 
 
@@ -1897,10 +2112,15 @@ function calculateGGNByMonth(
             month === end.getMonth()
         ){
 
+
             lastDay =
             end.getDate();
 
+
         }
+
+
+
 
 
 
@@ -1912,15 +2132,23 @@ function calculateGGNByMonth(
 
 
 
+
+
+
         let dailyRate =
         salary /
         monthDays;
 
 
 
+
+
         total +=
         dailyRate *
         days;
+
+
+
 
 
 
@@ -1932,14 +2160,26 @@ function calculateGGNByMonth(
         );
 
 
+
     }
+
+
 
 
 
     return total;
 
 
+
 }
+
+
+
+
+
+
+
+
 
 // =====================================================
 // FORMAT TARIKH INPUT
