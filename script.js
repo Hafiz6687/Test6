@@ -1064,29 +1064,6 @@ function resetHariRehatLebih(){
 
 
 }
-// =====================================================
-// SCRIPT.JS
-// FINAL INTEGRATION VERSION
-// PART 3/4
-// =====================================================
-
-
-SCRIPT.JS PART 3/4
-
-MULA:
-
-// =====================================================
-// KALKULATOR GAJI GANTI NOTIS (GGN)
-// FINAL PROFESSIONAL PATCH
-
-...
-
-HINGGA:
-
-function formatDateDisplay(date){
-...
-}
-
 
 
 // =====================================================
