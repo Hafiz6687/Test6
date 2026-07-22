@@ -3008,10 +3008,10 @@ function calculateGGNWeek(){
 
 
 
-    document.getElementById(
-        "ggnWeekAmount"
-    ).innerHTML =
-    "RM " + bayaranGGN.toFixed(2);
+  document.getElementById(
+    "ggnWeekAmount"
+).innerHTML =
+formatRM(bayaranGGN);
 
 
 }
